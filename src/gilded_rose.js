@@ -8,7 +8,6 @@ class Item {
   updateItemQuality() {
     this.sellIn -= 1;
     if (this.quality >= 50 || this.quality === 0) {
-      this.quality = 50;
       return this;
     } else if (this.isConjured()) {
       this.quality -= 2;
