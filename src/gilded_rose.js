@@ -9,6 +9,12 @@ class Item {
     this.sellIn -= 1;
     if (this.quality >= 50 || this.quality === 0) {
       return this;
+    } else if (this.sellIn < 0 && this.isConjured()) {
+      this.quality -= 4;
+      return this;
+    } else if (this.sellIn < 0) {
+      this.quality -= 2;
+      return this;
     } else if (this.isConjured()) {
       this.quality -= 2;
       return this;

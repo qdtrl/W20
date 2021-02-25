@@ -24,6 +24,23 @@ describe("GildedRose shop manager", function () {
     });
   });
 
+  it("Baisser de 2 la qualité et sellIn d'item normaux périmés", function () {
+    listItems.push(new Item("+5 Dexterity Vest", -4, 20));
+    listItems.push(new Item("Mana Cake", -2, 6));
+
+    const gildedRose = new Shop(listItems);
+    gildedRose.updateQuality();
+
+    var expected = [
+      { sellIn: -5, quality: 18 },
+      { sellIn: -3, quality: 4 }
+    ];
+    expected.forEach(function (testCase, idx) {
+      expect(gildedRose.items[idx].quality).toBe(testCase.quality);
+      expect(gildedRose.items[idx].sellIn).toBe(testCase.sellIn);
+    });
+  });
+
   it("Baisser de 2 la qualité et sellIn d'item 'conjured'", function () {
     listItems.push(new Item("Conjured +5 Dexterity Vest", 10, 20));
     listItems.push(new Item("Conjured Mana Cake", 3, 6));
@@ -34,6 +51,23 @@ describe("GildedRose shop manager", function () {
     var expected = [
       { sellIn: 9, quality: 18 },
       { sellIn: 2, quality: 4 }
+    ];
+    expected.forEach(function (testCase, idx) {
+      expect(gildedRose.items[idx].quality).toBe(testCase.quality);
+      expect(gildedRose.items[idx].sellIn).toBe(testCase.sellIn);
+    });
+  });
+
+  it("Baisser de 2 la qualité et sellIn d'item 'conjured' périmés", function () {
+    listItems.push(new Item("Conjured +5 Dexterity Vest", -10, 20));
+    listItems.push(new Item("Conjured Mana Cake", -3, 6));
+
+    const gildedRose = new Shop(listItems);
+    gildedRose.updateQuality();
+
+    var expected = [
+      { sellIn: -11, quality: 16 },
+      { sellIn: -4, quality: 2 }
     ];
     expected.forEach(function (testCase, idx) {
       expect(gildedRose.items[idx].quality).toBe(testCase.quality);
@@ -92,15 +126,13 @@ describe("GildedRose shop manager", function () {
     });
   });
 
-  it("Les tickets tombent à zéro après la date de péremption Aged Brie et Backstage passes", function () {
-    listItems.push(new Cheese("Aged Brie", 0, 43));
+  it("Les tickets tombent à zéro après la date de péremption", function () {
     listItems.push(new BackstagePasses("Backstage passes to a TAFKAL80ETC concert", 0, 43));
 
     const gildedRose = new Shop(listItems);
     gildedRose.updateQuality();
 
     var expected = [
-      { sellIn: -1, quality: 46 },
       { sellIn: -1, quality: 0 },
     ];
     expected.forEach(function (testCase, idx) {
